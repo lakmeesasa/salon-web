@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sasi Salon - Where Luxury Meets Artistry</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary-gold: #D4AF37;
+            --dark-gold: #B8941F;
+            --light-gold: #F4E7B1;
+            --deep-black: #0A0A0A;
+            --charcoal: #1A1A1A;
+            --warm-white: #FEFEFE;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            background: linear-gradient(135deg, #0A0A0A 0%, #1A1A1A 50%, #0F0F0F 100%);
+        }
+        
+        .playfair {
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .glass {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .glass-dark {
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, var(--primary-gold), var(--light-gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .parallax-bg {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #1A1A1A;
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: var(--primary-gold);
+            border-radius: 4px;
+        }
+        
+        .hover-lift {
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        
+        .hover-lift:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(212, 175, 55, 0.2);
+        }
+        
+        .text-shadow {
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .navbar-blur {
+            backdrop-filter: blur(20px);
+            background: rgba(10, 10, 10, 0.8);
+        }
+        
+        .service-card {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.1), transparent);
+            transition: left 0.5s;
+        }
+        
+        .service-card:hover::before {
+            left: 100%;
+        }
+        
+        .testimonial-slider {
+            overflow: hidden;
+        }
+        
+        .testimonial-track {
+            display: flex;
+            animation: slide 20s linear infinite;
+        }
+        
+        @keyframes slide {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        
+        .booking-form {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(26, 26, 26, 0.9) 100%);
+        }
+        
+        .social-icon {
+            transition: all 0.3s ease;
+        }
+        
+        .social-icon:hover {
+            transform: translateY(-3px) scale(1.1);
+            color: var(--primary-gold);
+        }
+    </style>
+</head>
+<body class="text-white custom-scrollbar">
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed top-0 w-full z-50 transition-all duration-300">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="text-2xl font-bold playfair gradient-text">
+                Sasi Salon
+            </div>
+            <div class="hidden md:flex space-x-8">
+                <a href="#home" class="hover:text-yellow-400 transition-colors">Home</a>
+                <a href="#services" class="hover:text-yellow-400 transition-colors">Services</a>
+                <a href="#gallery" class="hover:text-yellow-400 transition-colors">Gallery</a>
+                <a href="#about" class="hover:text-yellow-400 transition-colors">About</a>
+                <a href="#testimonials" class="hover:text-yellow-400 transition-colors">Reviews</a>
+                <a href="#contact" class="hover:text-yellow-400 transition-colors">Contact</a>
+            </div>
+            <button id="mobileMenuBtn" class="md:hidden">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="fixed inset-0 z-40 glass-dark hidden">
+        <div class="flex flex-col items-center justify-center h-full space-y-8 text-xl">
+            <a href="#home" class="hover:text-yellow-400 transition-colors">Home</a>
+            <a href="#services" class="hover:text-yellow-400 transition-colors">Services</a>
+            <a href="#gallery" class="hover:text-yellow-400 transition-colors">Gallery</a>
+            <a href="#about" class="hover:text-yellow-400 transition-colors">About</a>
+            <a href="#testimonials" class="hover:text-yellow-400 transition-colors">Reviews</a>
+            <a href="#contact" class="hover:text-yellow-400 transition-colors">Contact</a>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section id="home" class="min-h-screen flex items-center relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-black via-gray-900 to-black opacity-90"></div>
+        <div class="absolute inset-0">
+            <div class="absolute top-20 left-20 w-32 h-32 bg-yellow-400 rounded-full opacity-10 floating"></div>
+            <div class="absolute bottom-20 right-20 w-48 h-48 bg-yellow-400 rounded-full opacity-5 floating" style="animation-delay: -3s;"></div>
+            <div class="absolute top-1/2 left-1/2 w-64 h-64 bg-yellow-400 rounded-full opacity-5 floating" style="animation-delay: -1.5s;"></div>
+        </div>
+        
+        <div class="container mx-auto px-6 text-center relative z-10">
+            <h1 class="text-6xl md:text-8xl font-bold playfair mb-6 text-shadow">
+                <span class="gradient-text">Sasi</span> Salon
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed">
+                Where luxury meets artistry. Experience the pinnacle of hair excellence in the heart of Colombo.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <button onclick="scrollToSection('#services')" class="px-8 py-4 bg-gradient-to-r from-yellow-400 to-yellow-600 text-black font-semibold rounded-full hover:shadow-2xl hover:shadow-yellow-400/25 transition-all duration-300 transform hover:scale-105">
+                    <i class="fas fa-cut mr-2"></i>Explore Services
+                </button>
+                <button onclick="scrollToSection('#contact')" class="px-8 py-4 glass border border-yellow-400 text-yellow-400 font-semibold rounded-full hover:bg-yellow-400 hover:text-black transition-all duration-300">
+                    <i class="fas fa-calendar mr-2"></i>Book Appointment
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-20 relative">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-5xl font-bold playfair gradient-text mb-6">Signature Services</h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    Each service is meticulously crafted to enhance your natural beauty and reflect your unique personality.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="service-card glass rounded-2xl p-8 hover-lift">
+                    <div class="text-yellow-400 text-4xl mb-6">
+                        <i class="fas fa-cut"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold playfair mb-4">Precision Haircuts</h3>
+                    <p class="text-gray-300 mb-6 leading-relaxed">
+                        Master stylists create custom cuts that complement your face shape, lifestyle, and personal style. From classic elegance to avant-garde designs.
+                    </p>
+                    <div class="text-yellow-400 font-semibold">Starting from Rs. 3,500</div>
+                </div>
+                
+                <div class="service-card glass rounded-2xl p-8 hover-lift">
+                    <div class="text-yellow-400 text-4xl mb-6">
+                        <i class="fas fa-tint"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold playfair mb-4">Color Mastery</h3>
+                    <p class="text-gray-300 mb-6 leading-relaxed">
+                        From subtle highlights to bold transformations. Our colorists use premium products and advanced techniques for stunning, long-lasting results.
+                    </p>
+                    <div class="text-yellow-400 font-semibold">Starting from Rs. 4,500</div>
+                </div>
+                
+                <div class="service-card glass rounded-2xl p-8 hover-lift">
+                    <div class="text-yellow-400 text-4xl mb-6">
+                        <i class="fas fa-spa"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold playfair mb-4">Luxury Treatments</h3>
+                    <p class="text-gray-300 mb-6 leading-relaxed">
+                        Deep conditioning, keratin treatments, and scalp therapies using the finest products for ultimate hair health and shine.
+                    </p>
+                    <div class="text-yellow-400 font-semibold">Starting from Rs. 2,800</div>
+                </div>
+                
+                <div class="service-card glass rounded-2xl p-8 hover-lift">
+                    <div class="text-yellow-400 text-4xl mb-6">
+                        <i class="fas fa-magic"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold playfair mb-4">Event Styling</h3>
+                    <p class="text-gray-300 mb-6 leading-relaxed">
+                        Bridal hair, special occasions, and red-carpet ready styles. We create looks that photograph beautifully and last all day.
+                    </p>
+                    <div class="text-yellow-400 font-semibold">Starting from Rs. 5,500</div>
+                </div>
+                
+                <div class="service-card glass rounded-2xl p-8 hover-lift">
+                    <div class="text-yellow-400 text-4xl mb-6">
+                        <i class="fas fa-fire"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold playfair mb-4">Texture Services</h3>
+                    <p class="text-gray-300 mb-6 leading-relaxed">
+                        Professional straightening, perming, and texture enhancement services for effortless styling and long-lasting results.
+                    </p>
+                    <div class="text-yellow-400 font-semibold">Starting from Rs. 6,000</div>
+                </div>
+                
+                <div class="service-card glass rounded-2xl p-8 hover-lift">
+                    <div class="text-yellow-400 text-4xl mb-6">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                    <h3 class="text-2xl font-semibold playfair mb-4">VIP Experience</h3>
+                    <p class="text-gray-300 mb-6 leading-relaxed">
+                        Complete makeover package including consultation, cut, color, styling, and premium aftercare products. The ultimate luxury experience.
+                    </p>
+                    <div class="text-yellow-400 font-semibold">Starting from Rs. 12,000</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="py-20 bg-gradient-to-b from-black to-gray-900">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-5xl font-bold playfair gradient-text mb-6">Our Artistry</h2>
+                <p class="text-xl text-gray-300 max-w-2xl mx-auto">
+                    Witness the transformations that have made us Colombo's premier luxury salon.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <div class="aspect-square glass rounded-xl overflow-hidden hover-lift">
+                    <div class="w-full h-full bg-gradient-to-br from-yellow-400 to-yellow-600 flex items-center justify-center">
+                        <i class="fas fa-image text-4xl text-black opacity-50"></i>
+                    </div>
+                </div>
+                <div class="aspect-square glass rounded-xl overflow-hidden hover-lift">
+                    <div class="w-full h-full bg-gradient-to-br from-purple-400 to-pink-600 flex items-center justify-center">
+                        <i class="fas fa-image text-4xl text-white opacity-50"></i>
+                    </div>
+                </div>
+                <div class="aspect-square glass rounded-xl overflow-hidden hover-lift">
+                    <div class="w-full h-full bg-gradient-to-br from-blue-400 to-cyan-600 flex items-center justify-center">
+                        <i class="fas fa-image text-4xl text-white opacity-50"></i>
+                    </div>
+                </div>
+                <div class="aspect-square glass rounded-xl overflow-hidden hover-lift">
+                    <div class="w-full h-full bg-gradient-to-br from-green-400 to-emerald-600 flex items-center justify-center">
+                        <i class="fas fa-image text-4xl text-white opacity-50"></i>
+                    </div>
+                </div>
+                <div class="aspect-square glass rounded-xl overflow-hidden hover-lift col-span-2">
+                    <div class="w-full h-full bg-gradient-to-br from-red-400 to-rose-600 flex items-center justify-center">
+                        <i class="fas fa-image text-6xl text-white opacity-50"></i>
+                    </div>
+                </div>
+                <div class="aspect-square glass rounded-xl overflow-hidden hover-lift">
+                    <div class="w-full h-full bg-gradient-to-br from-orange-400 to-yellow-600 flex items-center justify-center">
+                        <i class="fas fa-image text-4xl text-white opacity-50"></i>
+                    </div>
+                </div>
+                <div class="aspect-square glass rounded-xl overflow-hidden hover-lift">
+                    <div class="w-full h-full bg-gradient-to-br from-indigo-400 to-purple-600 flex items-center justify-center">
+                        <i class="fas fa-image text-4xl text-white opacity-50"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 relative">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div>
+                    <h2 class="text-5xl font-bold playfair gradient-text mb-8">About Sasi Salon</h2>
+                    <p class="text-xl text-gray-300 mb-6 leading-relaxed">
+                        Founded with a vision to redefine luxury in hair care, Sasi Salon has become Colombo's premier destination for discerning clients who demand excellence.
+                    </p>
+                    <p class="text-lg text-gray-400 mb-8 leading-relaxed">
+                        Our master stylists combine decades of experience with cutting-edge techniques, using only the finest products from renowned international brands. Every visit is a personalized journey of transformation.
+                    </p>
+                    
+                    <div class="grid grid-cols-2 gap-6">
+                        <div class="text-center">
+                            <div class="text-3xl font-bold gradient-text playfair">500+</div>
+                            <div class="text-gray-400">Happy Clients</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold gradient-text playfair">5+</div>
+                            <div class="text-gray-400">Years Excellence</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold gradient-text playfair">10+</div>
+                            <div class="text-gray-400">Master Stylists</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold gradient-text playfair">50+</div>
+                            <div class="text-gray-400">Services Offered</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="relative">
+                    <div class="glass rounded-3xl p-8 hover-lift">
+                        <div class="aspect-square bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-2xl flex items-center justify-center">
+                            <i class="fas fa-scissors text-6xl text-black opacity-50"></i>
+                        </div>
+                    </div>
+                    <div class="absolute -top-4 -right-4 w-32 h-32 bg-yellow-400 rounded-full opacity-20 floating"></div>
+                    <div class="absolute -bottom-8 -left-8 w-24 h-24 bg-yellow-400 rounded-full opacity-10 floating" style="animation-delay: -2s;"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="py-20 bg-gradient-to-b from-gray-900 to-black overflow-hidden">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-5xl font-bold playfair gradient-text mb-6">What Our Clients Say</h2>
+                <p class="text-xl text-gray-300">Experience the difference through their words</p>
+            </div>
+            
+            <div class="testimonial-slider">
+                <div class="testimonial-track">
+                    <div class="glass rounded-2xl p-8 mx-4 min-w-80 hover-lift">
+                        <div class="flex items-center mb-6">
+                            <div class="w-12 h-12 bg-yellow-400 rounded-full flex items-center justify-center text-black font-semibold">
+                                A
+                            </div>
+                            <div class="ml-4">
+                                <div class="font-semibold">Amara Perera</div>
+                                <div class="text-sm text-gray-400">Fashion Model</div>
+                            </div>
+                        </div>
+                        <p class="text-gray-300 italic leading-relaxed">
+                            "Absolutely exceptional service! The stylists here understand hair like true artists. My color transformation exceeded all expectations."
+                        </p>
+                        <div class="flex text-yellow-400 mt-4">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="glass rounded-2xl p-8 mx-4 min-w-80 hover-lift">
+                        <div class="flex items-center mb-6">
+                            <div class="w-12 h-12 bg-yellow-400 rounded-full flex items-center justify-center text-black font-semibold">
+                                S
+                            </div>
+                            <div class="ml-4">
+                                <div class="font-semibold">Sanjana Fernando</div>
+                                <div class="text-sm text-gray-400">CEO</div>
+                            </div>
+                        </div>
+                        <p class="text-gray-300 italic leading-relaxed">
+                            "The VIP experience is truly unmatched. From consultation to final styling, every detail is perfect. This is luxury redefined."
+                        </p>
+                        <div class="flex text-yellow-400 mt-4">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="glass rounded-2xl p-8 mx-4 min-w-80 hover-lift">
+                        <div class="flex items-center mb-6">
+                            <div class="w-12 h-12 bg-yellow-400 rounded-full flex items-center justify-center text-black font-semibold">
+                                T
+                            </div>
+                            <div class="ml-4">
+                                <div class="font-semibold">Tharushi Silva</div>
+                                <div class="text-sm text-gray-400">Entrepreneur</div>
+                            </div>
+                        </div>
+                        <p class="text-gray-300 italic leading-relaxed">
+                            "I've been coming here for two years and every visit feels special. The attention to detail and personalized service is incredible."
+                        </p>
+                        <div class="flex text-yellow-400 mt-4">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    
+                    <!-- Duplicate for seamless loop -->
+                    <div class="glass rounded-2xl p-8 mx-4 min-w-80 hover-lift">
+                        <div class="flex items-center mb-6">
+                            <div class="w-12 h-12 bg-yellow-400 rounded-full flex items-center justify-center text-black font-semibold">
+                                A
+                            </div>
+                            <div class="ml-4">
+                                <div class="font-semibold">Amara Perera</div>
+                                <div class="text-sm text-gray-400">Fashion Model</div>
+                            </div>
+                        </div>
+                        <p class="text-gray-300 italic leading-relaxed">
+                            "Absolutely exceptional service! The stylists here understand hair like true artists. My color transformation exceeded all expectations."
+                        </p>
+                        <div class="flex text-yellow-400 mt-4">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact & Booking Section -->
+    <section id="contact" class="py-20 relative">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-5xl font-bold playfair gradient-text mb-6">Book Your Experience</h2>
+                <p class="text-xl text-gray-300">Step into luxury. Reserve your appointment today.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+                <!-- Booking Form -->
+                <div class="booking-form glass rounded-3xl p-8">
+                    <h3 class="text-3xl font-semibold playfair mb-8 gradient-text">Reserve Your Slot</h3>
+                    <form id="bookingForm" class="space-y-6">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Full Name</label>
+                            <input type="text" id="name" class="w-full px-4 py-3 bg-black/50 border border-gray-600 rounded-xl focus:border-yellow-400 focus:outline-none transition-colors">
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Phone</label>
+                                <input type="tel" id="phone" class="w-full px-4 py-3 bg-black/50 border border-gray-600 rounded-xl focus:border-yellow-400 focus:outline-none transition-colors">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Email</label>
+                                <input type="email" id="email" class="w-full px-4 py-3 bg-black/50 border border-gray-600 rounded-xl focus:border-yellow-400 focus:outline-none transition-colors">
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Preferred Date</label>
+                                <input type="date" id="date" class="w-full px-4 py-3 bg-black/50 border border-gray-600 rounded-xl focus:border-yellow-400 focus:outline-none transition-colors">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Preferred Time</label>
+                                <select id="time" class="w-full px-4 py-3 bg-black/50 border border-gray-600 rounded-xl focus:border-yellow-400 focus:outline-none transition-colors">
+                                    <option>9:00 AM</option>
+                                    <option>10:00 AM</option>
+                                    <option>11:00 AM</option>
+                                    <option>2:00 PM</option>
+                                    <option>3:00 PM</option>
+                                    <option>4:00 PM</option>
+                                    <option>5:00 PM</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Service</label>
+                            <select id="service" class="w-full px-4 py-3 bg-black/50 border border-gray-600 rounded-xl focus:border-yellow-400 focus:outline-none transition-colors">
+                                <option>Precision Haircut</option>
+                                <option>Color Mastery</option>
